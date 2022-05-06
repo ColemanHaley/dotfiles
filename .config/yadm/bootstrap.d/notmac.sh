@@ -6,7 +6,7 @@ MINICONDA_INSTALLER=Miniconda3-py39_4.11.0-Linux-x86_64.sh
 CMAKE_VERSION=3.23.1
 FISH_VERSION=3.4.1
 GIT_V=2.34.0
-
+MOSH_V=1.3.2
 if [ "$system_type" != "Darwin" ]; then
   # TODO: install tar if not installed
   # TODO: install wget if not installed
@@ -61,6 +61,15 @@ if [ "$system_type" != "Darwin" ]; then
 
   # install oh-my-fish
   curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+
+  wget https://mosh.org/mosh-${MOSH_V}.tar.gz
+  tar -xzf mosh-${MOSH_V}.tar.gz
+  cd mosh-${MOSH_V}
+  ./configure --prefix=${HOME}/.local
+  make
+  make install
+  rm mosh-${MOSH_V}.tar.gz
+  rm -r mosh-${MOSH_V}
 
   # install miniconda
   wget https://repo.anaconda.com/miniconda/${MINICONDA_INSTALLER}
