@@ -12,7 +12,7 @@ Plug 'tpope/vim-commentary'
 Plug 'mattn/emmet-vim'
 Plug 'lervag/vimtex'
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
-Plug 'neoclide/coc.nvim', {'branch' : 'release'}
+" Plug 'neoclide/coc.nvim', {'branch' : 'release'}
 
 call plug#end()
 
