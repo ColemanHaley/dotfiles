@@ -51,6 +51,14 @@ if [ "$system_type" != "Darwin" ]; then
     cd
     rm -r fish-${FISH_VERSION}
   fi
+  if ! command -v nvim >/dev/null 2>&1; then
+    echo "Installing NeoVim"
+    git clone https://github.com/neovim/neovim && cd neovim
+    git checkout stable && make
+    make CMAKE_INSTALL_PREFIX=$HOME/.local install
+    cd && rm -r neovim
+  fi 
+    
 
 
   # TODO: remove git and omf
