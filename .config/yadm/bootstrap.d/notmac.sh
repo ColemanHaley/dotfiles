@@ -21,64 +21,73 @@ if [ "$system_type" != "Darwin" ]; then
 
   
   # install cmake
-  wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz
-  tar -xzf cmake-${CMAKE_VERSION}.tar.gz
-  rm cmake-${CMAKE_VERSION}.tar.gz
-  cd cmake-${CMAKE_VERSION}
-  ./bootstrap
-  ./configure --prefix=${HOME}/.local
-  make
-  make install
-  cd
-  rm -r cmake-${CMAKE_VERSION}
+  if ! command -v cmake >/dev/null 2>&1; then
+    echo "Installing homebrew"
+    echo "Installing cmake"
+    wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz
+    tar -xzf cmake-${CMAKE_VERSION}.tar.gz
+    rm cmake-${CMAKE_VERSION}.tar.gz
+    cd cmake-${CMAKE_VERSION}
+    ./bootstrap
+    ./configure --prefix=${HOME}/.local
+    make
+    make install
+    cd
+    rm -r cmake-${CMAKE_VERSION}
+  fi
 
 
 
   # install fish
-  wget https://github.com/fish-shell/fish-shell/releases/download/${FISH_VERSION}/fish-${FISH_VERSION}.tar.xz
-  tar -xf fish-${FISH_VERSION}.tar.xz
-  rm fish-${FISH_VERSION}.tar.xz
-  cd fish-${FISH_VERSION}
-  cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local .
-  make
-  make install
-  cd
-  rm -r fish-${FISH_VERSION}
+  if ! command -v fish >/dev/null 2>&1; then
+    echo "Installing fish"
+    wget https://github.com/fish-shell/fish-shell/releases/download/${FISH_VERSION}/fish-${FISH_VERSION}.tar.xz
+    tar -xf fish-${FISH_VERSION}.tar.xz
+    rm fish-${FISH_VERSION}.tar.xz
+    cd fish-${FISH_VERSION}
+    cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local .
+    make
+    make install
+    cd
+    rm -r fish-${FISH_VERSION}
+  fi
 
 
   # TODO: remove git and omf
   # install new git
-  wget http://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_V}.tar.xz
-  tar -xf git-${GIT_V}.tar.xz
-  rm git-${GIT_V}.tar.xz
-  cd git-${GIT_V}
-  make configure
-  ./configure --prefix=${HOME}/.local
-  make NO_GETTEXT=1 # this flag is for Scientific Linux :/
-  make install
-  cd
-  rm -r git-${GIT_V}
+  # wget http://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_V}.tar.xz
+  # tar -xf git-${GIT_V}.tar.xz
+  # rm git-${GIT_V}.tar.xz
+  # cd git-${GIT_V}
+  # make configure
+  # ./configure --prefix=${HOME}/.local
+  # make NO_GETTEXT=1 # this flag is for Scientific Linux :/
+  # make install
+  # cd
+  # rm -r git-${GIT_V}
 
-  # install oh-my-fish
-  curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+  # install fisher
+  fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
 
-  wget https://mosh.org/mosh-${MOSH_V}.tar.gz
-  tar -xzf mosh-${MOSH_V}.tar.gz
-  cd mosh-${MOSH_V}
-  ./configure --prefix=${HOME}/.local
-  make
-  make install
-  rm mosh-${MOSH_V}.tar.gz
-  rm -r mosh-${MOSH_V}
+  # wget https://mosh.org/mosh-${MOSH_V}.tar.gz
+  # tar -xzf mosh-${MOSH_V}.tar.gz
+  # cd mosh-${MOSH_V}
+  # ./configure --prefix=${HOME}/.local
+  # make
+  # make install
+  # rm mosh-${MOSH_V}.tar.gz
+  # rm -r mosh-${MOSH_V}
 
   # install miniconda
-  wget https://repo.anaconda.com/miniconda/${MINICONDA_INSTALLER}
-  bash ${MINICONDA_INSTALLER} -b
+  if ! command -v conda >/dev/null 2>&1; then
+    wget https://repo.anaconda.com/miniconda/${MINICONDA_INSTALLER}
+    bash ${MINICONDA_INSTALLER} -b
+  fi
 
-  fisher install franciscolourenco/done
+  fish -c 'fisher install franciscolourenco/done'
 
-  fisher install jorgebucaran/hydro
-  set --global hydro_symbol_prompt λ
+  fish -c 'fisher install jorgebucaran/hydro'
+
   conda init fish
 
 fi
