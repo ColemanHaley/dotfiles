@@ -9,11 +9,15 @@ Plug 'itchyny/lightline.vim'
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'ghifarit53/daycula-vim', {'branch' : 'main'}
 Plug 'preservim/nerdtree'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'tpope/vim-commentary'
 Plug 'mattn/emmet-vim'
 Plug 'lervag/vimtex'
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
-" Plug 'neoclide/coc.nvim', {'branch' : 'release'}
+Plug 'neoclide/coc.nvim', {'branch' : 'release'}
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+"Plug 'ryanoasis/vim-devicons'
+Plug 'kyazdani42/nvim-web-devicons'
 
 call plug#end()
 
@@ -128,11 +132,40 @@ let g:NERDTreeWinPos="right"
 let NERDTreeIgnore = ['\.pyc$', '__pycache__', '.DS_Store']
 let g:NERDTreeWinSize=35
 
-map <leader>nn :NERDTreeToggle<cr>
+map <leader>nn :CHADopen<cr>
 map <leader>nf :NerdTreeFind<cr>
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = "all",
+    highlight = {
+        enable = true
+    }
+}
+EOF
+
+lua vim.api.nvim_set_var("chadtree_settings", { theme = { text_colour_set = "nord" } })
+
+set mouse=n
+tnoremap <Esc> <C-\><C-n>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+set splitbelow
+set splitright
+
 
 
 augroup black_on_save
   autocmd!
   autocmd BufWritePre *.py Black
 augroup end
+
+if !exists('g:syntax_on')
+	syntax enable
+endif
+
+if exists("g:loaded_webdevicons")
+	call webdevicons#refresh()
+endif

@@ -8,6 +8,7 @@ set --global hydro_symbol_prompt λ
 set TERM xterm-256color
 alias vi nvim
 alias ls exa
+alias weather 'curl wttr.in'
 
 function fuck -d "Correct your previous console command"
   set -l fucked_up_command $history[1]
