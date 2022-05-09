@@ -10,6 +10,7 @@ alias vi nvim
 if type -q exa
   alias ls exa
 end
+alias weather 'curl wttr.in'
 
 function fuck -d "Correct your previous console command"
   set -l fucked_up_command $history[1]
