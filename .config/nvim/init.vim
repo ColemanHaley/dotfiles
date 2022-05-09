@@ -6,6 +6,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'sheerun/vim-polyglot'
 Plug 'itchyny/lightline.vim'
+Plug 'psf/black', { 'branch': 'stable' }
 Plug 'ghifarit53/daycula-vim', {'branch' : 'main'}
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-commentary'
@@ -131,4 +132,7 @@ map <leader>nn :NERDTreeToggle<cr>
 map <leader>nf :NerdTreeFind<cr>
 
 
-
+augroup black_on_save
+  autocmd!
+  autocmd BufWritePre *.py Black
+augroup end
