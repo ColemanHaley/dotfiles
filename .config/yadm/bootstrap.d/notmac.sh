@@ -36,22 +36,6 @@ if [ "$system_type" != "Darwin" ]; then
     rm -r cmake-${CMAKE_VERSION}
   fi
 
-
-
-  # install fish
-  if ! command -v fish >/dev/null 2>&1; then
-    echo "Installing fish"
-    wget https://github.com/fish-shell/fish-shell/releases/download/${FISH_VERSION}/fish-${FISH_VERSION}.tar.xz
-    tar -xf fish-${FISH_VERSION}.tar.xz
-    rm fish-${FISH_VERSION}.tar.xz
-    cd fish-${FISH_VERSION}
-    cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local .
-    make
-    make install
-    cd
-    rm -r fish-${FISH_VERSION}
-  fi
-
   # install exa
   if ! command -v exa >/dev/null 2>&1; then
     wget https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip
@@ -66,6 +50,35 @@ if [ "$system_type" != "Darwin" ]; then
     make CMAKE_INSTALL_PREFIX=$HOME/.local install
     cd && rm -r neovim
   fi 
+
+  if ! [ -d ~/.oh-my-zsh ]; then
+    echo "Installing oh-my-zsh"
+    cd
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  fi
+
+  function plugin-clone {
+    local repo plugdir 
+
+    for repo in $@; do
+      plugdir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/${repo:t}
+      if [[ ! -d $plugdir ]]; then
+        echo "Cloning $repo..."
+        git clone -q --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugdir
+      fi
+    done
+  }
+
+  git clone --depth=1 https://gitee.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+  repos=(
+    esc/conda-zsh-completion
+    zsh-users/zsh-syntax-highlighting
+    zsh-users/zsh-autosuggestions
+    zsh-users/zsh-history-substring-search
+  )
+
+  plugin-clone $repos
     
 
 
@@ -83,7 +96,7 @@ if [ "$system_type" != "Darwin" ]; then
   # rm -r git-${GIT_V}
 
   # install fisher
-  fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
+  #fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'
 
   # wget https://mosh.org/mosh-${MOSH_V}.tar.gz
   # tar -xzf mosh-${MOSH_V}.tar.gz
@@ -100,10 +113,10 @@ if [ "$system_type" != "Darwin" ]; then
     bash ${MINICONDA_INSTALLER} -b
   fi
 
-  fish -c 'fisher install franciscolourenco/done'
+  # fish -c 'fisher install franciscolourenco/done'
+  #
+  # fish -c 'fisher install jorgebucaran/hydro'
 
-  fish -c 'fisher install jorgebucaran/hydro'
-
-  conda init fish
+  conda init zsh
 
 fi
