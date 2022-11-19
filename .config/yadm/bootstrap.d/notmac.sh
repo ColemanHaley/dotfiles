@@ -118,5 +118,6 @@ if [ "$system_type" != "Darwin" ]; then
   # fish -c 'fisher install jorgebucaran/hydro'
 
   conda init zsh
+  chsh -s zsh
 
 fi
