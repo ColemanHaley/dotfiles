@@ -51,11 +51,14 @@ if [ "$system_type" != "Darwin" ]; then
     cd
     rm -r fish-${FISH_VERSION}
   fi
+
+  # install exa
   if ! command -v exa >/dev/null 2>&1; then
-    https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip
+    wget https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip
     unzip exa-linux-x86_64-v0.10.1.zip -d $HOME/.local
     rm exa-linux-x86_64-v0.10.1.zip
   fi
+  
   if ! command -v nvim >/dev/null 2>&1; then
     echo "Installing NeoVim"
     git clone https://github.com/neovim/neovim && cd neovim

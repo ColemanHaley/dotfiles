@@ -1,13 +1,15 @@
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-eval $HOME/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+eval /home/s2189251/miniconda3/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<
 
 set --global hydro_symbol_prompt λ
 set TERM xterm-256color
 alias vi nvim
-alias ls exa
+if type -q exa
+  alias ls exa
+end
 alias weather 'curl wttr.in'
 
 function fuck -d "Correct your previous console command"
