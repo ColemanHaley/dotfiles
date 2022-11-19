@@ -59,7 +59,6 @@ if [ "$system_type" != "Darwin" ]; then
 
   function plugin-clone {
     local repo plugdir 
-
     for repo in $@; do
       plugdir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/${repo:t}
       if [[ ! -d $plugdir ]]; then
@@ -71,14 +70,9 @@ if [ "$system_type" != "Darwin" ]; then
 
   git clone --depth=1 https://gitee.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-  repos=(
-    esc/conda-zsh-completion
-    zsh-users/zsh-syntax-highlighting
-    zsh-users/zsh-autosuggestions
-    zsh-users/zsh-history-substring-search
-  )
+  repos=( esc/conda-zsh-completion zsh-users/zsh-syntax-highlighting zsh-users/zsh-autosuggestions zsh-users/zsh-history-substring-search )
 
-  plugin-clone $repos
+  plugin-clone "${repos[@]}"
     
 
 
@@ -117,7 +111,7 @@ if [ "$system_type" != "Darwin" ]; then
   #
   # fish -c 'fisher install jorgebucaran/hydro'
 
-  conda init zsh
-  chsh -s zsh
+  #conda init zsh
+  #chsh -s zsh
 
 fi
