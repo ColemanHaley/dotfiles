@@ -64,7 +64,7 @@ if [ "$system_type" != "Darwin" ]; then
       plugdir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/${repo:t}
       if [[ ! -d $plugdir ]]; then
         echo "Cloning $repo..."
-        git clone -q --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugdir
+        git clone -q --depth 1 https://github.com/$repo $plugdir
       fi
     done
   }
