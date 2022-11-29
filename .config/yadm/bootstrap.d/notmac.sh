@@ -39,29 +39,31 @@ if [ "$system_type" != "Darwin" ]; then
   ZSH_PACK_DIR=$HOME/packages/zsh
   ZSH_LINK="https://sourceforge.net/projects/zsh/files/latest/download"
 
-  if [[ ! -d "$ZSH_PACK_DIR" ]]; then
-      echo "Creating zsh directory under packages directory"
-      mkdir -p "$ZSH_PACK_DIR"
+  if ! command -v zsh >/dev/null 2>&1; then
+    if [[ ! -d "$ZSH_PACK_DIR" ]]; then
+        echo "Creating zsh directory under packages directory"
+        mkdir -p "$ZSH_PACK_DIR"
+    fi
+
+    if [[ ! -f $ZSH_SRC_NAME ]]; then
+        curl -Lo "$ZSH_SRC_NAME" "$ZSH_LINK"
+    fi
+
+    tar xJvf "$ZSH_SRC_NAME" -C "$ZSH_PACK_DIR" --strip-components 1
+    cd "$ZSH_PACK_DIR"
+
+    ./configure --prefix="$HOME/.local" \
+        CPPFLAGS="-I$HOME/.local/include" \
+        LDFLAGS="-L$HOME/.local/lib"
+    make -j && make install
   fi
-
-  if [[ ! -f $ZSH_SRC_NAME ]]; then
-      curl -Lo "$ZSH_SRC_NAME" "$ZSH_LINK"
-  fi
-
-  tar xJvf "$ZSH_SRC_NAME" -C "$ZSH_PACK_DIR" --strip-components 1
-  cd "$ZSH_PACK_DIR"
-
-  ./configure --prefix="$HOME/.local" \
-      CPPFLAGS="-I$HOME/.local/include" \
-      LDFLAGS="-L$HOME/.local/lib"
-  make -j && make install
 
   # install exa
-  if ! command -v exa >/dev/null 2>&1; then
-    wget https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip
-    unzip exa-linux-x86_64-v0.10.1.zip -d $HOME/.local
-    rm exa-linux-x86_64-v0.10.1.zip
-  fi
+  # if ! command -v exa >/dev/null 2>&1; then
+  #   wget https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip
+  #   unzip exa-linux-x86_64-v0.10.1.zip -d $HOME/.local
+  #   rm exa-linux-x86_64-v0.10.1.zip
+  # fi
   
   if ! command -v nvim >/dev/null 2>&1; then
     echo "Installing NeoVim"
@@ -78,9 +80,12 @@ if [ "$system_type" != "Darwin" ]; then
   fi
 
   function plugin-clone {
-    local repo plugdir 
+    local repo plugdir plugname
     for repo in $@; do
-      plugdir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/${repo:t}
+      plugname=$(echo "${repo}" | cut -d/ -f2)
+
+      echo "${plugname}"
+      plugdir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/${plugname}
       if [[ ! -d $plugdir ]]; then
         echo "Cloning $repo..."
         git clone -q --depth 1 https://github.com/$repo $plugdir
