@@ -108,6 +108,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vi=nvim
+alias dinner='gshuf -n 1 "/Users/coleman/Library/Mobile Documents/iCloud~md~obsidian/Documents/centralcontrol/003 resources/cooking/dinner.md"'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -115,16 +116,19 @@ alias vi=nvim
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/s2189251/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/coleman/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/s2189251/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/s2189251/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/Users/coleman/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/coleman/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/s2189251/miniconda3/bin:$PATH"
+        export PATH="/Users/coleman/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
